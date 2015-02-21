@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Life Expectancy at Birth by Country</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Life Expectancy at Birth by Country">
+  <meta name="author" content="Shoko Sakamoto">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Life Expectancy at Birth by Country</h1>
+    <h2>One aspect of inequality in the world</h2>
+    <p>Shoko Sakamoto<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>What is &#39;Life Expectancy at Birth&#39;(LEB)?</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Life expectancy at birth indicates the number of years a newborn infant would live if prevailing patterns of mortality at the time of its birth were to stay the same throughout its life.<a href="http://data.worldbank.org/indicator/SP.DYN.LE00.IN">Source</a></p>
+
+<ul>
+<li>In most countries <strong>LEB</strong> has increased in past 50 years.</li>
+<li>There are few countries Where <strong>LEB</strong> has not increased at all.</li>
+<li>By applying Liner Regression Model, coefficient of model shows the increase ratio of <strong>LEB</strong> per year.</li>
+</ul>
+
+<h2>Top and bottom countries of LEB</h2>
+
+<ul>
+<li><p>Download data from <a href="http://data.worldbank.org/indicator/SP.DYN.LE00.IN">Source</a></p></li>
+<li><p>Apply Liner Regression Model to each country. Rank countries by coefficient.</p></li>
+<li><p>Rank countries by the latest data</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <pre><code class="r">lmdata &lt;- function (country) {
+  x &lt;- substr(names(LeData2),2,5)[3:55]; y &lt;- LeData2[LeData2[1]==country][3:55]
+  data &lt;- data.frame(cbind(as.numeric(x), as.numeric(y))); names(data) &lt;- c(&#39;X1&#39;, &#39;X2&#39;);data
+}
+df = data.frame(matrix(vector(), 0, 3, dimnames=list(c(), c(&quot;country&quot;, &quot;slope&quot;,&quot;latest&quot;))), stringsAsFactors=F)
+for(i in 1:nrow(LeData2)) {
+  cdata &lt;- lmdata(as.character(LeData2[i,1])) 
+  df[i,2] &lt;- lm(X2 ~ X1, data=cdata)$coeff[2];df[i,1] &lt;- as.character(LeData2[i,1])
+  df[i,3] &lt;- cdata[nrow(cdata),2]
+} 
+</code></pre>
+
+<pre><code class="r">head(df[order(df$slope),],5)
+</code></pre>
+
+<pre><code>##                country       slope
+## 222           Zimbabwe -0.14959585
+## 29            Botswana -0.12681140
+## 206            Ukraine -0.02299842
+## 119            Lesotho -0.02082916
+## 172 Russian Federation -0.01100417
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <pre><code class="r">head(df[order(-df$slope),],5)
+</code></pre>
+
+<pre><code>##         country     slope
+## 127    Maldives 0.8362458
+## 103    Cambodia 0.7743360
+## 28       Bhutan 0.7371081
+## 199 Timor-Leste 0.7093241
+## 156        Oman 0.6864902
+</code></pre>
+
+<pre><code class="r">head(df[order(df$latest),],5)
+</code></pre>
+
+<pre><code>##                      country       slope   latest
+## 180             Sierra Leone  0.20369426 45.32905
+## 29                  Botswana -0.12681140 46.99071
+## 119                  Lesotho -0.02082916 48.83600
+## 192                Swaziland  0.04912371 48.85063
+## 30  Central African Republic  0.13186950 49.47539
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <pre><code class="r">head(df[order(-df$latest),],5)
+</code></pre>
+
+<pre><code>##                 country     slope   latest
+## 84 Hong Kong SAR, China 0.3102395 83.48049
+## 99                Japan 0.2830013 83.09610
+## 96                Italy 0.2678999 82.93659
+## 95              Iceland 0.1848876 82.91707
+## 33          Switzerland 0.2239492 82.69756
+</code></pre>
+
+<h2>Interactive comparison of <strong>LEB</strong> between two countries</h2>
+
+<ul>
+<li><a href="https://shokoskmt.shinyapps.io/project/">https://shokoskmt.shinyapps.io/project/</a></li>
+<li>Check the differnce of <strong>LEB</strong> trend between two countries you concern.</li>
+<li>See the actual past <strong>LEB</strong> and predicted <strong>LEB</strong> (after 2012) from Liner Regression Model</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='What is &#39;Life Expectancy at Birth&#39;(LEB)?'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title=''>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title=''>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title=''>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
