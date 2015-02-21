@@ -1,0 +1,69 @@
+---
+title       : Life Expectancy at Birth by Country
+subtitle    : One aspect of inequality in the world
+author      : Shoko Sakamoto
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : [mathjax]    # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## What is 'Life Expectancy at Birth'(LEB)?
+
+Life expectancy at birth indicates the number of years a newborn infant would live if prevailing patterns of mortality at the time of its birth were to stay the same throughout its life.[Source](http://data.worldbank.org/indicator/SP.DYN.LE00.IN)
+
+- In most countries **LEB** has increased in past 50 years.
+- There are few countries Where **LEB** has not increased at all.
+- By applying Liner Regression Model, coefficient of model shows the increase ratio of **LEB** per year.
+
+
+## Top and bottom countries of LEB 
+- Download data from [Source](http://data.worldbank.org/indicator/SP.DYN.LE00.IN)
+```{r reg1, echo=FALSE, results='hide',fig.width=10, fig.height=5}
+LeData2 <-  read.csv("C:\\Users\\Shoko\\Documents\\R\\project\\LifeExpectancy.csv", header=TRUE, na.strings=c(''))
+```
+- Apply Liner Regression Model to each country. Rank countries by coefficient.
+- Rank countries by the latest data
+
+--- .class #id
+
+```{r reg2, echo=TRUE, results='show'}
+lmdata <- function (country) {
+  x <- substr(names(LeData2),2,5)[3:55]; y <- LeData2[LeData2[1]==country][3:55]
+  data <- data.frame(cbind(as.numeric(x), as.numeric(y))); names(data) <- c('X1', 'X2');data
+}
+df = data.frame(matrix(vector(), 0, 3, dimnames=list(c(), c("country", "slope","latest"))), stringsAsFactors=F)
+for(i in 1:nrow(LeData2)) {
+  cdata <- lmdata(as.character(LeData2[i,1])) 
+  df[i,2] <- lm(X2 ~ X1, data=cdata)$coeff[2];df[i,1] <- as.character(LeData2[i,1])
+  df[i,3] <- cdata[nrow(cdata),2]
+} 
+```
+
+```{r reg3, echo=TRUE, results='show'}
+head(df[order(df$slope),],5)
+```
+
+--- .class #id
+
+```{r reg4, echo=TRUE, results='show'}
+head(df[order(-df$slope),],5)
+```
+
+```{r reg5, echo=TRUE, results='show'}
+head(df[order(df$latest),],5)
+```
+
+--- .class #id
+
+```{r reg6, echo=TRUE, results='show'}
+head(df[order(-df$latest),],5)
+```
+
+## Interactive comparison of **LEB** between two countries 
+- [https://shokoskmt.shinyapps.io/project/](https://shokoskmt.shinyapps.io/project/)
+- Check the differnce of **LEB** trend between two countries you concern.
+- See the actual past **LEB** and predicted **LEB** (after 2012) from Liner Regression Model
