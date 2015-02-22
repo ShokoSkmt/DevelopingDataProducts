@@ -17,8 +17,7 @@ Life expectancy at birth indicates the number of years a newborn infant would li
 
 - In most countries **LEB** has increased in past 50 years.
 - There are few countries Where **LEB** has not increased at all.
-- By applying Liner Regression Model, coefficient of model shows the increase ratio of **LEB** per year.
-
+- By applying Liner Regression Model, the coefficient of model shows the increase ratio of **LEB** per year.
 
 ## Top and bottom countries of LEB 
 - Download data from [Source](http://data.worldbank.org/indicator/SP.DYN.LE00.IN)
@@ -27,7 +26,7 @@ Life expectancy at birth indicates the number of years a newborn infant would li
 - Rank countries by the latest data
 
 --- .class #id
-
+Calculate each country's coefficient from Liner Regression and store latest LED
 
 ```r
 lmdata <- function (country) {
@@ -41,37 +40,37 @@ for(i in 1:nrow(LeData2)) {
   df[i,3] <- cdata[nrow(cdata),2]
 } 
 ```
-
+Bottom coefficient
 
 ```r
 head(df[order(df$slope),],5)
 ```
 
 ```
-##                country       slope
-## 222           Zimbabwe -0.14959585
-## 29            Botswana -0.12681140
-## 206            Ukraine -0.02299842
-## 119            Lesotho -0.02082916
-## 172 Russian Federation -0.01100417
+##                country       slope   latest
+## 222           Zimbabwe -0.14959585 58.04598
+## 29            Botswana -0.12681140 46.99071
+## 206            Ukraine -0.02299842 70.94415
+## 119            Lesotho -0.02082916 48.83600
+## 172 Russian Federation -0.01100417 70.46098
 ```
 
 --- .class #id
-
+Top coefficient
 
 ```r
 head(df[order(-df$slope),],5)
 ```
 
 ```
-##         country     slope
-## 127    Maldives 0.8362458
-## 103    Cambodia 0.7743360
-## 28       Bhutan 0.7371081
-## 199 Timor-Leste 0.7093241
-## 156        Oman 0.6864902
+##         country     slope   latest
+## 127    Maldives 0.8362458 77.57383
+## 103    Cambodia 0.7743360 71.40883
+## 28       Bhutan 0.7371081 67.88927
+## 199 Timor-Leste 0.7093241 67.02059
+## 156        Oman 0.6864902 76.59105
 ```
-
+Bottom LED in 2012
 
 ```r
 head(df[order(df$latest),],5)
@@ -87,7 +86,7 @@ head(df[order(df$latest),],5)
 ```
 
 --- .class #id
-
+Top LED in 2012
 
 ```r
 head(df[order(-df$latest),],5)
@@ -105,4 +104,4 @@ head(df[order(-df$latest),],5)
 ## Interactive comparison of **LEB** between two countries 
 - [https://shokoskmt.shinyapps.io/project/](https://shokoskmt.shinyapps.io/project/)
 - Check the differnce of **LEB** trend between two countries you concern.
-- See the actual past **LEB** and predicted **LEB** (after 2012) from Liner Regression Model
+- See the actual past **LEB** and predicted **LEB** (2013~)

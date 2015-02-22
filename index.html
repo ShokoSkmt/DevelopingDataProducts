@@ -51,7 +51,7 @@
 <ul>
 <li>In most countries <strong>LEB</strong> has increased in past 50 years.</li>
 <li>There are few countries Where <strong>LEB</strong> has not increased at all.</li>
-<li>By applying Liner Regression Model, coefficient of model shows the increase ratio of <strong>LEB</strong> per year.</li>
+<li>By applying Liner Regression Model, the coefficient of model shows the increase ratio of <strong>LEB</strong> per year.</li>
 </ul>
 
 <h2>Top and bottom countries of LEB</h2>
@@ -68,7 +68,9 @@
 
 <slide class="class" id="id" style="background:;">
   <article data-timings="">
-    <pre><code class="r">lmdata &lt;- function (country) {
+    <p>Calculate each country&#39;s coefficient from Liner Regression and store latest LED</p>
+
+<pre><code class="r">lmdata &lt;- function (country) {
   x &lt;- substr(names(LeData2),2,5)[3:55]; y &lt;- LeData2[LeData2[1]==country][3:55]
   data &lt;- data.frame(cbind(as.numeric(x), as.numeric(y))); names(data) &lt;- c(&#39;X1&#39;, &#39;X2&#39;);data
 }
@@ -80,15 +82,17 @@ for(i in 1:nrow(LeData2)) {
 } 
 </code></pre>
 
+<p>Bottom coefficient</p>
+
 <pre><code class="r">head(df[order(df$slope),],5)
 </code></pre>
 
-<pre><code>##                country       slope
-## 222           Zimbabwe -0.14959585
-## 29            Botswana -0.12681140
-## 206            Ukraine -0.02299842
-## 119            Lesotho -0.02082916
-## 172 Russian Federation -0.01100417
+<pre><code>##                country       slope   latest
+## 222           Zimbabwe -0.14959585 58.04598
+## 29            Botswana -0.12681140 46.99071
+## 206            Ukraine -0.02299842 70.94415
+## 119            Lesotho -0.02082916 48.83600
+## 172 Russian Federation -0.01100417 70.46098
 </code></pre>
 
   </article>
@@ -97,16 +101,20 @@ for(i in 1:nrow(LeData2)) {
 
 <slide class="class" id="id" style="background:;">
   <article data-timings="">
-    <pre><code class="r">head(df[order(-df$slope),],5)
+    <p>Top coefficient</p>
+
+<pre><code class="r">head(df[order(-df$slope),],5)
 </code></pre>
 
-<pre><code>##         country     slope
-## 127    Maldives 0.8362458
-## 103    Cambodia 0.7743360
-## 28       Bhutan 0.7371081
-## 199 Timor-Leste 0.7093241
-## 156        Oman 0.6864902
+<pre><code>##         country     slope   latest
+## 127    Maldives 0.8362458 77.57383
+## 103    Cambodia 0.7743360 71.40883
+## 28       Bhutan 0.7371081 67.88927
+## 199 Timor-Leste 0.7093241 67.02059
+## 156        Oman 0.6864902 76.59105
 </code></pre>
+
+<p>Bottom LED in 2012</p>
 
 <pre><code class="r">head(df[order(df$latest),],5)
 </code></pre>
@@ -125,7 +133,9 @@ for(i in 1:nrow(LeData2)) {
 
 <slide class="class" id="id" style="background:;">
   <article data-timings="">
-    <pre><code class="r">head(df[order(-df$latest),],5)
+    <p>Top LED in 2012</p>
+
+<pre><code class="r">head(df[order(-df$latest),],5)
 </code></pre>
 
 <pre><code>##                 country     slope   latest
@@ -141,7 +151,7 @@ for(i in 1:nrow(LeData2)) {
 <ul>
 <li><a href="https://shokoskmt.shinyapps.io/project/">https://shokoskmt.shinyapps.io/project/</a></li>
 <li>Check the differnce of <strong>LEB</strong> trend between two countries you concern.</li>
-<li>See the actual past <strong>LEB</strong> and predicted <strong>LEB</strong> (after 2012) from Liner Regression Model</li>
+<li>See the actual past <strong>LEB</strong> and predicted <strong>LEB</strong> (2013~)</li>
 </ul>
 
   </article>

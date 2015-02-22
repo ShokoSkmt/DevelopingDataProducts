@@ -17,8 +17,7 @@ Life expectancy at birth indicates the number of years a newborn infant would li
 
 - In most countries **LEB** has increased in past 50 years.
 - There are few countries Where **LEB** has not increased at all.
-- By applying Liner Regression Model, coefficient of model shows the increase ratio of **LEB** per year.
-
+- By applying Liner Regression Model, the coefficient of model shows the increase ratio of **LEB** per year.
 
 ## Top and bottom countries of LEB 
 - Download data from [Source](http://data.worldbank.org/indicator/SP.DYN.LE00.IN)
@@ -29,7 +28,7 @@ LeData2 <-  read.csv("C:\\Users\\Shoko\\Documents\\R\\project\\LifeExpectancy.cs
 - Rank countries by the latest data
 
 --- .class #id
-
+Calculate each country's coefficient from Liner Regression and store latest LED
 ```{r reg2, echo=TRUE, results='show'}
 lmdata <- function (country) {
   x <- substr(names(LeData2),2,5)[3:55]; y <- LeData2[LeData2[1]==country][3:55]
@@ -42,23 +41,23 @@ for(i in 1:nrow(LeData2)) {
   df[i,3] <- cdata[nrow(cdata),2]
 } 
 ```
-
+Bottom coefficient
 ```{r reg3, echo=TRUE, results='show'}
 head(df[order(df$slope),],5)
 ```
 
 --- .class #id
-
+Top coefficient
 ```{r reg4, echo=TRUE, results='show'}
 head(df[order(-df$slope),],5)
 ```
-
+Bottom LED in 2012
 ```{r reg5, echo=TRUE, results='show'}
 head(df[order(df$latest),],5)
 ```
 
 --- .class #id
-
+Top LED in 2012
 ```{r reg6, echo=TRUE, results='show'}
 head(df[order(-df$latest),],5)
 ```
@@ -66,4 +65,4 @@ head(df[order(-df$latest),],5)
 ## Interactive comparison of **LEB** between two countries 
 - [https://shokoskmt.shinyapps.io/project/](https://shokoskmt.shinyapps.io/project/)
 - Check the differnce of **LEB** trend between two countries you concern.
-- See the actual past **LEB** and predicted **LEB** (after 2012) from Liner Regression Model
+- See the actual past **LEB** and predicted **LEB** (2013~)
