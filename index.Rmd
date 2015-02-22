@@ -63,6 +63,6 @@ head(df[order(-df$latest),],5)
 ```
 
 ## Interactive comparison of **LEB** between two countries 
-- [https://shokoskmt.shinyapps.io/project/](https://shokoskmt.shinyapps.io/project/)
+- [https://shokoskmt.shinyapps.io/DataProduct/](https://shokoskmt.shinyapps.io/DataProduct/)
 - Check the differnce of **LEB** trend between two countries you concern.
 - See the actual past **LEB** and predicted **LEB** (2013~)
